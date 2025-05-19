@@ -37,7 +37,7 @@ await GenerateBackgroundMusic(scenario.BackgroundMusic, musicPath);
 // Step 2: Generate cover image
 var coverPath = Path.Combine(outputDir, "cover.png");
 Console.WriteLine("Step 2: Generating cover image...");
-// await GenerateCoverImage(scenario.Cover, coverPath);
+await GenerateCoverImage(scenario.Cover, coverPath);
 
 // Step 3: Process segments
 var voiceLine = new StringBuilder();
@@ -50,7 +50,13 @@ for (int i = 0; i < scenario.Segments.Count; i++)
         var videoPath = Path.Combine(outputDir, "video", $"{i}.mp4");
 
         Console.WriteLine($"Processing segment {i}...");
-        // await GenerateVideo(segment.Video, videoPath);
+        await GenerateVideo(segment.Video, videoPath);
+    }
+    if (segment?.Type == "actor")
+    {
+        Console.WriteLine("Generating actors voice...");
+        var actorsVoicePath = Path.Combine(outputDir, "voice", $"{i}.mp3");
+        await GenerateVoice(segment.Script, actorsVoicePath);
     }
     voiceLine.Append(segment.Script);
     voiceLine.Append(" ");
